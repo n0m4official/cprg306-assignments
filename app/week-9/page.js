@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { useUserAuth } from "../_utils/auth-context";
-import ItemList from "../item-list";
-import NewItem from "../new-item";
-import MealIdeas from "../meal-ideas";
-import itemsData from "../items.json";
+import { useUserAuth } from "./_utils/auth-context";
+import ItemList from "./item-list";
+import NewItem from "./new-item";
+import MealIdeas from "./meal-ideas";
+import itemsData from "./items.json";
 
 export default function ShoppingListPage() {
   const { user, firebaseSignOut } = useUserAuth();
