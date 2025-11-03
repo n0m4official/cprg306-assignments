@@ -2,35 +2,26 @@
 
 import { useState } from "react";
 
-export default function NewItem() {
-  // Initialize state variables
+export default function NewItem({ onAddItem }) {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [category, setCategory] = useState("produce");
 
-  // Increment function (max 20)
-  const increment = () => {
-    setQuantity((prev) => Math.min(prev + 1, 20));
-  };
+  const increment = () => setQuantity((prev) => Math.min(prev + 1, 20));
+  const decrement = () => setQuantity((prev) => Math.max(prev - 1, 1));
 
-  // Decrement function (min 1)
-  const decrement = () => {
-    setQuantity((prev) => Math.max(prev - 1, 1));
-  };
-
-  // Handle form submission
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent page reload
+    event.preventDefault();
 
-    const item = {
+    const newItem = {
+      id: Math.random().toString(36).substring(2, 9), // random string id
       name,
       quantity,
       category,
     };
 
-    console.log("Submitted item:", item);
-
-    alert(`Item added:\nName: ${name}\nQuantity: ${quantity}\nCategory: ${category}`);
+    // Pass new item to parent
+    onAddItem(newItem);
 
     // Reset form fields
     setName("");
@@ -41,7 +32,7 @@ export default function NewItem() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-xl rounded-xl p-6 w-80 flex flex-col items-stretch space-y-4 border border-gray-100"
+      className="bg-white shadow-xl rounded-xl p-6 w-80 flex flex-col items-stretch space-y-4 border border-gray-100 mx-auto"
     >
       <h2 className="text-2xl font-semibold text-gray-800 text-center mb-2">
         Add New Item
@@ -63,11 +54,10 @@ export default function NewItem() {
         />
       </div>
 
-      {/* Quantity Section */}
+      {/* Quantity Controls */}
       <div className="flex flex-col items-center">
         <label className="font-medium text-gray-700 mb-1">Quantity:</label>
         <div className="flex items-center space-x-4">
-          {/* Decrement button */}
           <button
             type="button"
             onClick={decrement}
@@ -81,10 +71,8 @@ export default function NewItem() {
             -
           </button>
 
-          {/* Quantity display */}
           <span className="text-xl font-bold text-gray-700">{quantity}</span>
 
-          {/* Increment button */}
           <button
             type="button"
             onClick={increment}
@@ -128,7 +116,7 @@ export default function NewItem() {
         </select>
       </div>
 
-      {/* Submit Button */}
+      {/* Submit */}
       <button
         type="submit"
         className="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition"
