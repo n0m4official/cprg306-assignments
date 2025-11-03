@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { useUserAuth } from "./_utils/auth-context";
+import { useUserAuth } from "./_utils/auth-context.js";
 
 export default function Page() {
   const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
