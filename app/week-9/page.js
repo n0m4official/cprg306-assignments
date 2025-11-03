@@ -1,72 +1,69 @@
 "use client";
 
+import React from "react";
+import Link from "next/link";
 import { useUserAuth } from "./_utils/auth-context";
-import ItemList from "./item-list";
-import NewItem from "./new-item";
-import MealIdeas from "./meal-ideas";
-import itemsData from "./items.json";
 
-export default function ShoppingListPage() {
-  const { user, firebaseSignOut } = useUserAuth();
-  const [items, setItems] = useState(itemsData);
-  const [selectedItemName, setSelectedItemName] = useState("");
+export default function Page() {
+  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
 
-  if (!user) {
-    // Option 1: simple blocking message
-    return (
-      <main className="flex items-center justify-center min-h-screen bg-gray-50 text-gray-700">
-        <div className="bg-white shadow-md p-6 rounded-lg text-center">
-          <p className="mb-4 font-medium">
-            You must be logged in to view this page.
-          </p>
-          <a
-            href="/week-9"
-            className="text-blue-600 underline hover:text-blue-800"
-          >
-            Return to login
-          </a>
-        </div>
-      </main>
-    );
-
-    // Option 2 – redirect (uncomment if you prefer)
-    // redirect("/week-9");
-  }
-
-  const handleAddItem = (newItem) => {
-    setItems((prev) => [...prev, newItem]);
+  const handleLogin = async () => {
+    try {
+      await gitHubSignIn();
+    } catch (err) {
+      console.error("GitHub Sign-In Error:", err);
+    }
   };
 
-  const handleItemSelect = (item) => {
-    const cleaned = item.name
-      .split(",")[0]
-      .trim()
-      .replace(
-        /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|\uD83E[\uDD00-\uDDFF])/g,
-        ""
-      )
-      .toLowerCase();
-    setSelectedItemName(cleaned);
+  const handleLogout = async () => {
+    try {
+      await firebaseSignOut();
+    } catch (err) {
+      console.error("Logout Error:", err);
+    }
   };
 
   return (
-    <main className="max-w-5xl mx-auto p-6 bg-gray-50 rounded shadow mt-10">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Shopping List & Meal Ideas</h1>
-        <button
-          onClick={firebaseSignOut}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold"
-        >
-          Logout
-        </button>
-      </div>
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-800">
+      <div className="bg-white shadow-lg rounded-xl p-8 text-center max-w-md">
+        <h1 className="text-3xl font-bold mb-6">CPRG 306 Shopping List</h1>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex flex-col space-y-6 w-full md:w-1/2">
-          <NewItem onAddItem={handleAddItem} />
-          <ItemList items={items} onItemSelect={handleItemSelect} />
-        </div>
-        <MealIdeas ingredient={selectedItemName} />
+        {!user ? (
+          <>
+            <p className="text-gray-600 mb-4">
+              Please sign in with GitHub to continue.
+            </p>
+            <button
+              onClick={handleLogin}
+              className="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-5 py-2 rounded-lg transition"
+            >
+              Login with GitHub
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="mb-4">
+              Welcome, <strong>{user.displayName}</strong>
+              <br />
+              <span className="text-sm text-gray-500">{user.email}</span>
+            </p>
+
+            <div className="flex flex-col gap-3">
+              <Link
+                href="/week-9/shopping-list"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg transition"
+              >
+                Go to Shopping List
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-lg transition"
+              >
+                Logout
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </main>
   );
