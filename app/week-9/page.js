@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import "react";
 import Link from "next/link";
 import { useUserAuth } from "./_utils/auth-context.js";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Item from "./item.js";
 
 export default function ItemList({ items, onItemSelect }) {
