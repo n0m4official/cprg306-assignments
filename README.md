@@ -37,5 +37,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 
-Submission link: 
+Submission link:   
 https://cprg306-assignments-git-master-mats-projects-dccfd781.vercel.app?_vercel_share=mGwPLmAhDSwbTrSWOjdNgSaO0rdQgMFN
