@@ -1,4 +1,3 @@
-// app/week-9/_utils/firebase.js
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 

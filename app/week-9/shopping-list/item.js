@@ -1,6 +1,5 @@
 import React from "react";
 
-// Display a single item, now with click functionality
 export default function Item({ name, quantity, category, onSelect }) {
   return (
     <li
